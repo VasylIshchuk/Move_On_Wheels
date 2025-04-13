@@ -1,0 +1,14 @@
+[
+	{
+		"id": "5a25a88a-ec91-445f-b3f0-759a94ec3150",
+		"role": "Admin",
+		"login": "Vasyl",
+		"password": "$2a$10$yc5N.WfVJd1YAb6kxWYDiO.VswA57Dh1n31rRRlRr9duusXjvbiii"
+	},
+	{
+		"id": "3c360cee-c7a2-4e72-88bb-0367a0724067",
+		"role": "Client",
+		"login": "Kate",
+		"password": "$2a$10$AgOGXhCIM1jkj5H5SxMQCu6mM2Wd0vmRML5QxfoFw9qNkIJBPdc5y"
+	}
+]
