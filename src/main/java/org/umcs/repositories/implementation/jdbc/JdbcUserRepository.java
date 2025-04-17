@@ -1,6 +1,6 @@
 package org.umcs.repositories.implementation.jdbc;
 
-import org.umcs.database.DatabaseHelper;
+import org.umcs.database.JdbcHelper;
 import org.umcs.database.JdbcCreator;
 import org.umcs.models.User;
 import org.umcs.repositories.IUserRepository;
@@ -26,7 +26,7 @@ public class JdbcUserRepository implements IUserRepository {
 
     private JdbcUserRepository() {
         try (Connection connection = JdbcConnectionManager.getInstance().getConnection()) {
-            if (DatabaseHelper.validateTableExist(connection, "users")) return;
+            if (JdbcHelper.validateTableExist(connection, "users")) return;
             createTableUsers(connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -60,11 +60,22 @@ public class JdbcUserRepository implements IUserRepository {
     }
 
     @Override
+    public Optional<User> findById(String id) {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        return findUserBy(id, sql);
+    }
+
+
+    @Override
     public Optional<User> findByLogin(String login) {
         String sql = "SELECT * FROM users WHERE login = ?";
+        return findUserBy(login, sql);
+    }
+
+    private Optional<User> findUserBy(String value, String sql) {
         try (Connection connection = JdbcConnectionManager.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, login);
+            statement.setString(1, value);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) return Optional.empty();
 
@@ -76,14 +87,13 @@ public class JdbcUserRepository implements IUserRepository {
     }
 
     @Override
-    public boolean validateUserLogin(String loginFromClient) {
+    public boolean isUserLoginExist(String loginFromClient) {
         String sql = "SELECT * FROM users WHERE login = ?";
         try (Connection connection = JdbcConnectionManager.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, loginFromClient);
             ResultSet resultSet = statement.executeQuery();
-            if (!resultSet.next()) return true;
-            return false;
+            return resultSet.next();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -91,7 +101,7 @@ public class JdbcUserRepository implements IUserRepository {
 
     @Override
     public List<User> getListClients() {
-        String sql = "SELECT * FROM users WHERE role = 'Client'";
+        String sql = "SELECT * FROM users WHERE role = 'CLIENT'";
         try (Connection connection = JdbcConnectionManager.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {

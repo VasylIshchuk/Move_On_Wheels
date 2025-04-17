@@ -35,6 +35,14 @@ public class JsonUserRepository implements IUserRepository {
     }
 
     @Override
+    public Optional<User> findById(String id) {
+        for (User user : users) {
+            if (user.getId().equals(id)) return Optional.of(user);
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<User> findByLogin(String login) {
         for (User user : users) {
             if (user.getLogin().equals(login)) return Optional.of(user);
@@ -43,18 +51,18 @@ public class JsonUserRepository implements IUserRepository {
     }
 
     @Override
-    public boolean validateUserLogin(String loginFromClient) {
+    public boolean isUserLoginExist(String loginFromClient) {
         for (User user : users) {
-            if (user.getLogin().equals(loginFromClient)) return false;
+            if (user.getLogin().equals(loginFromClient)) return true;
         }
-        return true;
+        return false;
     }
 
     @Override
     public List<User> getListClients() {
-        List<User>  clients = new ArrayList<>();
+        List<User> clients = new ArrayList<>();
         for (User user : users) {
-            if (!user.getRole().equals("Client")) continue;
+            if (!user.getRole().equals("CLIENT")) continue;
             clients.add(user);
         }
         return clients;

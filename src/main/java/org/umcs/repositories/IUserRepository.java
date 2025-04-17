@@ -9,9 +9,11 @@ public interface IUserRepository {
 
     void save(User user);
 
+    Optional<User> findById(String id);
+
     Optional<User> findByLogin(String login);
 
-    boolean validateUserLogin(String loginFromClient);
+    boolean isUserLoginExist(String loginFromClient);
 
     List<User> getListClients();
 }

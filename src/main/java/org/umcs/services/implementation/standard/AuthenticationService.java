@@ -1,15 +1,15 @@
-package org.umcs.services;
+package org.umcs.services.implementation.standard;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.umcs.MenuManager;
 import org.umcs.models.User;
 import org.umcs.repositories.IUserRepository;
+import org.umcs.services.IAuthenticationService;
 
 import java.util.Optional;
 
-public class AuthenticationService {
+public class AuthenticationService implements IAuthenticationService {
     private final IUserRepository userRepository;
-    private final MenuManager menuManager = new MenuManager();
 
     public AuthenticationService(IUserRepository userRepository) {
         this.userRepository = userRepository;
@@ -19,10 +19,10 @@ public class AuthenticationService {
         Optional<User> user = userRepository.findByLogin(login);
 
         if (user.isEmpty()) {
-            menuManager.showInvalidLoginPrompt();
+            MenuManager.showInvalidLoginPrompt();
             return Optional.empty();
         } else if (!validatePassword(password, user.get().getPassword())) {
-            menuManager.showInvalidPasswordPrompt();
+            MenuManager.showInvalidPasswordPrompt();
             return Optional.empty();
         }
 
@@ -34,8 +34,8 @@ public class AuthenticationService {
     }
 
     public boolean register(String login, String password, String role) {
-        if (!userRepository.validateUserLogin(login)) {
-            menuManager.showLoginExistsPrompt();
+        if (userRepository.isUserLoginExist(login)) {
+            MenuManager.showLoginExistsPrompt();
             return false;
         }
 

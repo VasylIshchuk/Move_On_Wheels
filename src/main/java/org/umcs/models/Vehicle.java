@@ -1,12 +1,23 @@
 package org.umcs.models;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 
+import org.hibernate.annotations.Type;
 import org.umcs.storage.JsonSerializable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+
+@Entity
+@Table(name = "vehicles")
 
 @Data
 @NoArgsConstructor
@@ -14,16 +25,34 @@ import java.util.UUID;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Vehicle implements JsonSerializable {
+    @Id
+    @Column(nullable = false, unique = true)
     private String id;
+
+    @Column(nullable = false)
     private String category;
+
+    @Column(name = "registration_number",nullable = false, unique = true)
     private String registrationNumber;
+
+    @Column(nullable = false)
     private String brand;
+
+    @Column(nullable = false)
     private String model;
+
+    @Column(nullable = false)
     private int year;
+
+    @Column(columnDefinition = "NUMERIC")
     private double price;
+
+    @Column(nullable = false)
     private boolean rented;
-    @Builder.Default
-    private Map<String, Object> attributes = Map.of();
+
+    @Type(JsonBinaryType.class)
+    @Column(columnDefinition = "jsonb")
+    private Map<String, Object> attributes = new HashMap<>();
 
     public Vehicle(String category, String registrationNumber, String brand, String model, int year, double price) {
         this.id = UUID.randomUUID().toString();
@@ -34,7 +63,6 @@ public class Vehicle implements JsonSerializable {
         this.year = year;
         this.price = price;
         this.rented = false;
-        this.attributes = new HashMap<>();
     }
 
     public Object getAttribute(String key) {

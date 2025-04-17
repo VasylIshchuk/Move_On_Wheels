@@ -1,3 +1,29 @@
 [
+	{
+		"id": "b51eefe6-f4c4-4f44-a0be-82f7618ac776",
+		"category": "Car",
+		"registrationNumber": "HU75K8",
+		"brand": "Lexus",
+		"model": "fs4",
+		"year": 2005,
+		"price": 20.0,
+		"rented": false,
+		"attributes": {
+			"licence category": "A",
+			"seats": "4"
+		}
+	},
+	{
+		"id": "455b1475-9775-445e-9f40-4a6d8fcd7a51",
+		"category": "Car",
+		"registrationNumber": "Ji43JDS",
+		"brand": "Honda",
+		"model": "ss3",
+		"year": 2022,
+		"price": 30.0,
+		"rented": false,
+		"attributes": {
 
+		}
+	}
 ]

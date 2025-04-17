@@ -9,7 +9,6 @@ public interface IVehicleRepository {
 
     void save(Vehicle vehicle);
 
-
     void deleteById(String vehicleId);
 
     Optional<Vehicle> findById(String vehicleId);

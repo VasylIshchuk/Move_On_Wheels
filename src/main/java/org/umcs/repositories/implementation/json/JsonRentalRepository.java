@@ -1,6 +1,7 @@
 package org.umcs.repositories.implementation.json;
 
 import com.google.gson.reflect.TypeToken;
+import org.umcs.models.Vehicle;
 import org.umcs.storage.JsonFileStorage;
 import org.umcs.models.Rental;
 import org.umcs.repositories.IRentalRepository;
@@ -29,23 +30,41 @@ public class JsonRentalRepository implements IRentalRepository {
 
     @Override
     public void save(Rental rental) {
-        rentals.add(rental);
-        jsonFileStorage.saveToFile(rentals);
+        Optional<Rental> existingRental = findById(rental.getId());
+
+        if (existingRental.isPresent()) {
+            updateStorage();
+        } else {
+            rentals.add(rental);
+            updateStorage();
+        }
     }
 
     @Override
-    public void removeRentalById(String rentalId){
+    public Optional<Rental> findById(String id) {
+        return rentals.stream().filter(vehicle -> vehicle.getId().equals(id)).findFirst();
+    }
+
+    @Override
+    public void removeRentalById(String rentalId) {
         rentals.removeIf(rental -> rental.getId().equals(rentalId));
+        updateStorage();
+    }
+
+    private void updateStorage() {
         jsonFileStorage.saveToFile(rentals);
     }
 
     @Override
-    public Optional<Rental> findByUserId(String userId) {
-        return rentals.stream().filter(rental -> rental.getUserId().equals(userId)).findFirst();
+    public Optional<Rental> findByUserIdAndReturnDateIsNull(String userId) {
+        return  rentals.stream()
+                .filter(rental -> rental.getUserId().equals(userId))
+                .filter(rental -> rental.getReturnDate() == null)
+                .findFirst();
     }
 
     @Override
-    public List<Rental> getListRentals() {
+    public List<Rental> getAllRentals() {
         return rentals;
     }
 }

@@ -1,7 +1,7 @@
 package org.umcs.repositories.implementation.jdbc;
 
 import com.google.gson.Gson;
-import org.umcs.database.DatabaseHelper;
+import org.umcs.database.JdbcHelper;
 import org.umcs.database.JdbcCreator;
 import org.umcs.models.Vehicle;
 import org.umcs.repositories.IVehicleRepository;
@@ -25,7 +25,7 @@ public class JdbcVehicleRepository implements IVehicleRepository {
 
     private JdbcVehicleRepository() {
         try (Connection connection = JdbcConnectionManager.getInstance().getConnection()) {
-            if (DatabaseHelper.validateTableExist(connection, "vehicles")) return;
+            if (JdbcHelper.validateTableExist(connection, "vehicles")) return;
             createTableVehicles(connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -56,8 +56,8 @@ public class JdbcVehicleRepository implements IVehicleRepository {
 
     @Override
     public void save(Vehicle vehicle) {
-        Optional<Vehicle> vehicle1 = findById(vehicle.getId());
-        if (vehicle1.isPresent()){
+        Optional<Vehicle> existingVehicle = findById(vehicle.getId());
+        if (existingVehicle.isPresent()){
             update(vehicle);
         }else{
             addNewVehicle(vehicle);
@@ -70,6 +70,7 @@ public class JdbcVehicleRepository implements IVehicleRepository {
 
         try (Connection connection = JdbcConnectionManager.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setString(1, vehicle.getRegistrationNumber());
             statement.setString(2, vehicle.getCategory());
             statement.setString(3, vehicle.getBrand());
@@ -85,6 +86,7 @@ public class JdbcVehicleRepository implements IVehicleRepository {
             throw new RuntimeException(e);
         }
     }
+
 
     private void addNewVehicle(Vehicle vehicle){
         String sql = "INSERT INTO vehicles (id, registration_number, category, brand, model, year, price, rented, attributes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?::jsonb)";

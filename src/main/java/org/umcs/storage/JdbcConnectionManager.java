@@ -1,6 +1,10 @@
 package org.umcs.storage;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,27 +25,29 @@ public class JdbcConnectionManager {
         database_url = getDatabaseUrl();
     }
 
-    private String getDatabaseUrl() {
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
-            Properties props = new Properties();
+    public static String getDatabaseUrl() {
+        try {
+            Path path = Paths.get("src/main/resources/config.properties");
 
-            if (input == null) {
+            if (!Files.exists(path)) {
                 throw new RuntimeException("The \"config.properties\" file was not found!");
             }
 
-            props.load(input);
-            String databaseUrl = props.getProperty("DB_URL");
+            try (InputStream input = Files.newInputStream(path)) {
+                Properties props = new Properties();
+                props.load(input);
+                String databaseUrl = props.getProperty("DB_URL");
 
-            if (databaseUrl == null) {
-                throw new RuntimeException("The \"DB_URL\" value was not found in \"config.properties\"!");
+                if (databaseUrl == null) {
+                    throw new RuntimeException("The \"DB_URL\" value was not found in \"config.properties\"!");
+                }
+
+                return databaseUrl;
             }
-
-            return databaseUrl;
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new RuntimeException("Error while loading \"config.properties\"", e);
         }
     }
-
 
     public Connection getConnection() {
         try {

@@ -10,7 +10,9 @@ public interface IRentalRepository {
 
     void removeRentalById(String rentalId);
 
-    Optional<Rental> findByUserId(String userId);
+    Optional<Rental> findById(String id);
 
-    List<Rental> getListRentals();
+    Optional<Rental> findByUserIdAndReturnDateIsNull(String userId);
+
+    List<Rental> getAllRentals();
 }

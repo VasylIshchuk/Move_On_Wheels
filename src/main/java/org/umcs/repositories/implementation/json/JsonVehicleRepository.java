@@ -31,13 +31,22 @@ public class JsonVehicleRepository implements IVehicleRepository {
     @Override
     public void deleteById(String vehicleId) {
         vehicles.removeIf(vehicle -> vehicle.getId().equals(vehicleId));
+        updateStorage();
+    }
+
+    private void updateStorage() {
         jsonFileStorage.saveToFile(vehicles);
     }
 
     @Override
     public void save(Vehicle vehicle) {
-        vehicles.add(vehicle);
-        jsonFileStorage.saveToFile(vehicles);
+        Optional<Vehicle> existingVehicle = findById(vehicle.getId());
+        if (existingVehicle.isPresent()) {
+            updateStorage();
+        } else {
+            vehicles.add(vehicle);
+            updateStorage();
+        }
     }
 
     @Override

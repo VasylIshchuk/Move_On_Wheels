@@ -1,83 +1,80 @@
 package org.umcs.handlers;
 
-import org.umcs.services.AuthenticationService;
 import org.umcs.MenuManager;
+import org.umcs.Service;
 import org.umcs.models.User;
 
 import java.util.Optional;
 import java.util.Scanner;
 
 public class AuthenticationHandler {
-    private final AuthenticationService authenticationService;
-
-    private final MenuManager menuManager = new MenuManager();
     private final Scanner scanner = new Scanner(System.in);
-
-    public AuthenticationHandler(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
+    private final int INDEX_REGISTER_OPTION = 2;
+    private final int ADMIN_SELECTION__OPTION = 1;
+    private final int CLIENT_SELECTION_OPTION = 2;
 
     public User handleAuthentication() {
-        menuManager.showAuthenticationMenu();
+        MenuManager.showAuthenticationMenu();
 
-        int index = menuManager.getUserNumberFromSelection(menuManager.getStartMenuOptionCount());
-        if (index == menuManager.getIndexRegisterOption()) handleUserRegister();
+        int index = MenuManager.getUserNumberFromSelection(MenuManager.START_MENU_OPTION_COUNT);
+        if (index == INDEX_REGISTER_OPTION) handleUserRegister();
         return handleUserLogin();
     }
 
     private User handleUserLogin() {
         Optional<User> user;
         do {
-            menuManager.showLoginHeader();
+            MenuManager.showLoginHeader();
             String login = getLoginFromUser();
             String password = getPasswordFromUser();
-            user = authenticationService.login(login, password);
+            user = Service.authenticationService.login(login, password);
             if (user.isPresent()) break;
         } while (true);
         return user.get();
     }
 
     private String getLoginFromUser() {
-        menuManager.showLoginPrompt();
+        MenuManager.showLoginPrompt();
         return scanner.nextLine();
     }
 
     private String getPasswordFromUser() {
-        menuManager.showPasswordPrompt();
+        MenuManager.showPasswordPrompt();
         return scanner.nextLine();
     }
 
     private void handleUserRegister() {
         do {
-            menuManager.showRegisterHeader();
+            MenuManager.showRegisterHeader();
 
             String role = getUserRoleFromMenu();
             String login = getNewLoginFromClient();
             String password = getNewPasswordFromClient();
-            if (authenticationService.register(login, password, role)) break;
+            if (Service.authenticationService.register(login, password, role)) break;
         } while (true);
     }
 
     private String getUserRoleFromMenu() {
-        menuManager.showStartOptions();
+        MenuManager.showStartOptions();
 
-        int index = menuManager.getUserNumberFromSelection(menuManager.getStartMenuOptionCount());
+        int index = MenuManager.getUserNumberFromSelection(MenuManager.ROLE_MENU_OPTION_COUNT);
         switch (index) {
-            case 1:
-                return "Admin";
-            case 2:
-                return "Client";
+            case ADMIN_SELECTION__OPTION:
+                return "ADMIN";
+            case CLIENT_SELECTION_OPTION:
+                return "CLIENT";
         }
+
         return null;
     }
 
     private String getNewLoginFromClient() {
-        menuManager.showNewLoginPrompt();
+        MenuManager.showNewLoginPrompt();
         return scanner.nextLine();
     }
 
     private String getNewPasswordFromClient() {
-        menuManager.showCreateNewPasswordPrompt();
+        MenuManager.showCreateNewPasswordPrompt();
         return scanner.nextLine();
     }
 }

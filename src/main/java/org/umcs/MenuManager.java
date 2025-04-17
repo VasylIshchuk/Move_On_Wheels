@@ -1,150 +1,149 @@
 package org.umcs;
 
-import lombok.Getter;
+import org.umcs.models.Vehicle;
+import org.umcs.repositories.IVehicleRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class MenuManager {
-    @Getter
-    private final int adminMenuOptionCount = 5;
-    @Getter
-    private final int startMenuOptionCount = 2;
-    @Getter
-    private final int timeOptionsRentVehicle = 3;
-    @Getter
-    private final int indexRegisterOption = 2;
-    private final Scanner scanner = new Scanner(System.in);
 
-    public void showStartOptions() {
-        String menuPrompt = "Select role (write number):" +
-                "\n\t1) Admin" +
-                "\n\t2) Client";
-        System.out.println(menuPrompt);
+    public static final int ADMIN_MENU_OPTION_COUNT = 5;
+    public static final int START_MENU_OPTION_COUNT = 2;
+    public static final int CLIENT_MENU_OPTION_COUNT = 2;
+    public static final int ROLE_MENU_OPTION_COUNT = 2;
+
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void showStorageOptions() {
+        System.out.println("Select role (write number):" +
+                "\n\t1) Hibernate" +
+                "\n\t2) JDBC" +
+                "\n\t3) JSON");
     }
 
-    public void showAdminOptions() {
-        String menuPrompt = "Select an option (write number):" +
+    public static void showStartOptions() {
+        System.out.println("Select role (write number):" +
+                "\n\t1) Admin" +
+                "\n\t2) Client");
+    }
+
+    public static void showAdminOptions() {
+        System.out.println("Select an option (write number):" +
                 "\n\t1) Show the list of vehicles;" +
                 "\n\t2) Show the list of rental vehicles;" +
                 "\n\t3) Add a new vehicle;" +
                 "\n\t4) Remove a vehicle;" +
-                "\n\t5) Show the list of clients";
-        System.out.println(menuPrompt);
+                "\n\t5) Show the list of clients");
     }
 
-    public void showClientOptions() {
-        String menuPrompt = "Select an option (write number):" +
+    public static void showClientOptions() {
+        System.out.println("Select an option (write number):" +
                 "\n\t1) Rent vehicle" +
-                "\n\t2) Return vehicle";
-        System.out.println(menuPrompt);
+                "\n\t2) Return vehicle");
     }
 
-    public void showTimeOptionsRentVehicle() {
-        String menuPrompt = "Select an option (write number):" +
-                "\n\t1) 1 day" +
-                "\n\t2) 1 week" +
-                "\n\t3) 1 month";
-        System.out.println(menuPrompt);
-    }
-
-    public void showAuthenticationMenu() {
-        String authenticationMenu = "Select an option (write number):" +
+    public static void showAuthenticationMenu() {
+        System.out.println("Select an option (write number):" +
                 "\n\t1) Sign in" +
-                "\n\t2) Register";
-        System.out.println(authenticationMenu);
+                "\n\t2) Register");
     }
 
-    public void showLoginHeader() {
+    public static void showLoginHeader() {
         System.out.println("Login to your account: ");
     }
 
-    public void showLoginPrompt() {
+    public static void showLoginPrompt() {
         System.out.print("\tLogin: ");
     }
 
-    public void showPasswordPrompt() {
+    public static void showPasswordPrompt() {
         System.out.print("\tPassword: ");
     }
 
-    public void showRegisterHeader() {
+    public static void showRegisterHeader() {
         System.out.println("Register a new account:");
     }
 
-    public void showNewLoginPrompt() {
+    public static void showNewLoginPrompt() {
         System.out.print("\tNew login: ");
     }
 
-    public void showCreateNewPasswordPrompt() {
+    public static void showCreateNewPasswordPrompt() {
         System.out.print("\tNew password: ");
     }
 
-    public void showLoginExistsPrompt() {
+    public static void showLoginExistsPrompt() {
         System.out.println("\tThis login already exists ;(");
     }
 
-    public void showInvalidLoginPrompt() {
+    public static void showInvalidLoginPrompt() {
         System.out.println("\tInvalid login :( ");
     }
 
-    public void showInvalidPasswordPrompt() {
+    public static void showInvalidPasswordPrompt() {
         System.out.println("\tInvalid password :( ");
     }
 
-    public void showIdSelectionPrompt() {
+    public static void showIdSelectionPrompt() {
         System.out.print("\tSelect ID number: ");
     }
 
-    public void showInvalidIdPrompt() {
+    public static void showInvalidIdPrompt() {
         System.out.println("\tInvalid ID number :( ");
     }
 
-    public void showNoRentalVehiclePrompt() {
+    public static void showNoRentalVehiclePrompt() {
         System.out.print("This user has no rented vehicle");
     }
 
-    public void showGetIdPrompt() {
+    public static void showGetIdPrompt() {
         System.out.print("Enter id: ");
     }
 
-    public void showGetCategoryPrompt() {
+    public static void showGetCategoryPrompt() {
         System.out.print("Enter category: ");
     }
 
-    public void showGetRegistrationNumberPrompt() {
+    public static void showGetRegistrationNumberPrompt() {
         System.out.print("Enter registration number: ");
     }
 
-    public void showGetBrandPrompt() {
+    public static void showGetBrandPrompt() {
         System.out.print("Enter brand: ");
     }
 
-    public void showGetModelPrompt() {
+    public static void showGetModelPrompt() {
         System.out.print("Enter model: ");
     }
 
-    public void showGetYearPrompt() {
+    public static void showGetYearPrompt() {
         System.out.print("Enter year: ");
     }
 
-    public void showGetPricePrompt() {
+    public static void showGetPricePrompt() {
         System.out.print("Enter price: ");
     }
 
-    public void showGetAttributeNamePrompt() {
+    public static void showGetAttributeNamePrompt() {
         System.out.print("\tEnter attribute name: ");
     }
 
-    public void showGetAttributeValuePrompt() {
+    public static void showGetAttributeValuePrompt() {
         System.out.print("\tEnter attribute value: ");
     }
 
-    public void showAddAttributeConfirmationPrompt() {
+    public static void showAddAttributeConfirmationPrompt() {
         System.out.print("Do you want to add an additional attribute? (Y/N): ");
+    }
+    public static void UserAlreadyHasRentedVehicle() {
+        System.out.println("You have already rented a vehicle.");
     }
 
 
-    public int getUserNumberFromSelection(int maxOptions) {
+    public static int getUserNumberFromSelection(int maxOptions) {
         while (true) {
             if (scanner.hasNextInt()) {
                 int index = scanner.nextInt();
@@ -157,13 +156,11 @@ public class MenuManager {
         }
     }
 
-    private boolean isValidIndex(int idx, int maxOptions) {
+    private static boolean isValidIndex(int idx, int maxOptions) {
         return idx >= 1 && idx <= maxOptions;
     }
 
-
-    public String getNumberFromConsole() {
-        Scanner scanner = new Scanner(System.in);
+    public static String getNumberFromConsole() {
         while (true) {
             if (scanner.hasNextInt() || scanner.hasNextDouble()) {
                 return scanner.next();
@@ -174,12 +171,12 @@ public class MenuManager {
         }
     }
 
-    public String getIdFromConsole() {
+    public static String getIdFromConsole() {
         showIdSelectionPrompt();
         return scanner.next();
     }
 
-    public <T> void showList(List<T> list) {
+    public static <T> void showList(List<T> list) {
         StringBuilder stringBuffer = new StringBuilder();
         int idx = 1;
         for (T element : list) {
@@ -188,8 +185,17 @@ public class MenuManager {
         }
         System.out.println(stringBuffer);
     }
+
+    public static Vehicle getAvailableVehicleIdFromConsole(IVehicleRepository vehicleRepository) {
+        do {
+            List<Vehicle> availableVehicles = vehicleRepository.getNoRentedVehicles();
+            showList(availableVehicles);
+
+            String vehicleId = getIdFromConsole();
+
+            Optional<Vehicle> optionalVehicle = vehicleRepository.findById(vehicleId);
+            if (optionalVehicle.isPresent()) return optionalVehicle.get();
+            showInvalidIdPrompt();
+        } while (true);
+    }
 }
-
-
-
-

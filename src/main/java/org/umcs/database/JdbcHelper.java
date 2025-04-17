@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DatabaseHelper {
+public class JdbcHelper {
     public static boolean validateTableExist(Connection connection, String tableName) {
         String sql = "SELECT EXISTS ( " +
                 " SELECT 1 FROM information_schema.tables " +

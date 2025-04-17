@@ -6,11 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.umcs.models.Rental;
 import org.umcs.models.User;
 import org.umcs.models.Vehicle;
+import org.umcs.repositories.implementation.jdbc.JdbcUserRepository;
+import org.umcs.repositories.implementation.jdbc.JdbcVehicleRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class JdbcCreator {
     public static String sqlCreateTableVehicles = "CREATE TABLE vehicles " +
@@ -29,14 +33,14 @@ public class JdbcCreator {
             "(id TEXT NOT NULL, " +
             " vehicle_id TEXT NOT NULL REFERENCES vehicles (id) ON DELETE CASCADE, " +
             " user_id TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE, " +
-            " rent_date DATE NOT NULL, " +
-            " return_date DATE NOT NULL, " +
+            " rent_date TIMESTAMP NOT NULL, " +
+            " return_date TIMESTAMP, " +
             " PRIMARY KEY ( id ))";
 
     public static String sqlCreateTableUsers = "CREATE TABLE users " +
             "(id TEXT NOT NULL, " +
-            " role TEXT, " +
-            " CHECK (role IN ('Admin','Client')), " +
+            " role TEXT NOT NULL, " +
+            " CHECK (role IN ('ADMIN','CLIENT')), " +
             " login TEXT NOT NULL UNIQUE, " +
             " password TEXT NOT NULL, " +
             " PRIMARY KEY ( id ))";
@@ -56,13 +60,20 @@ public class JdbcCreator {
 
     public static Rental createRentalFromDatabase(ResultSet sqlResultSet) {
         try {
+            String vehicleId = sqlResultSet.getString("vehicle_id");
+            Optional<Vehicle> optionalVehicle = JdbcVehicleRepository.getInstance().findById(vehicleId);
+
+            String userId = sqlResultSet.getString("user_id");
+            Optional<User> optionalUser = JdbcUserRepository.getInstance().findById(userId);
+
             return Rental.builder()
                     .id(sqlResultSet.getString("id"))
-                    .vehicleId(sqlResultSet.getString("vehicle_id"))
-                    .userId(sqlResultSet.getString("user_id"))
+                    .vehicle(optionalVehicle.get())
+                    .user(optionalUser.get())
                     .rentDate(sqlResultSet.getString("rent_date"))
                     .returnDate(sqlResultSet.getString("return_date"))
                     .build();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

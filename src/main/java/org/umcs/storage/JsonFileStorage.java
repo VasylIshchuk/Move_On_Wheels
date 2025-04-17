@@ -55,8 +55,10 @@ public class JsonFileStorage<T> {
 
     public List<T> load(Type type) {
         Gson gson = new Gson();
+
         Path path = Paths.get(filePath);
         if (!Files.exists(path)) return new ArrayList<>();
+
         try {
             String json = Files.readString(path);
             List<T> list = gson.fromJson(json, type);

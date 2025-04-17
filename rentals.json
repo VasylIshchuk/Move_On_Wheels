@@ -1,3 +1,77 @@
 [
-
+	{
+		"id": "3f8a7965-cf07-480b-af40-69ce0b81a73b",
+		"vehicle": 	{
+			"id": "b51eefe6-f4c4-4f44-a0be-82f7618ac776",
+			"category": "Car",
+			"registrationNumber": "HU75K8",
+			"brand": "Lexus",
+			"model": "fs4",
+			"year": 2005,
+			"price": 20.0,
+			"rented": true,
+			"attributes": {
+				"licence category": "A",
+				"seats": "4"
+			}
+		},
+		"user": 	{
+			"id": "3c360cee-c7a2-4e72-88bb-0367a0724067",
+			"role": "CLIENT",
+			"login": "Kate",
+			"password": "$2a$10$AgOGXhCIM1jkj5H5SxMQCu6mM2Wd0vmRML5QxfoFw9qNkIJBPdc5y"
+		},
+		"rentDate": "2025-04-16 18:22:54",
+		"returnDate": "2025-04-16 18:23:10"
+	},
+	{
+		"id": "63ef0096-6dc5-45c7-80a4-27f5d2fd6101",
+		"vehicle": 	{
+			"id": "b51eefe6-f4c4-4f44-a0be-82f7618ac776",
+			"category": "Car",
+			"registrationNumber": "HU75K8",
+			"brand": "Lexus",
+			"model": "fs4",
+			"year": 2005,
+			"price": 20.0,
+			"rented": true,
+			"attributes": {
+				"licence category": "A",
+				"seats": "4"
+			}
+		},
+		"user": 	{
+			"id": "3c360cee-c7a2-4e72-88bb-0367a0724067",
+			"role": "CLIENT",
+			"login": "Kate",
+			"password": "$2a$10$AgOGXhCIM1jkj5H5SxMQCu6mM2Wd0vmRML5QxfoFw9qNkIJBPdc5y"
+		},
+		"rentDate": "2025-04-17 16:46:09",
+		"returnDate": "2025-04-17 16:46:11"
+	},
+	{
+		"id": "68e8fed9-42fc-45b7-9616-0c5a5142a386",
+		"vehicle": 	{
+			"id": "b51eefe6-f4c4-4f44-a0be-82f7618ac776",
+			"category": "Car",
+			"registrationNumber": "HU75K8",
+			"brand": "Lexus",
+			"model": "fs4",
+			"year": 2005,
+			"price": 20.0,
+			"rented": false,
+			"attributes": {
+				"licence category": "A",
+				"seats": "4"
+			}
+		},
+		"user": 	{
+			"id": "3c360cee-c7a2-4e72-88bb-0367a0724067",
+			"role": "CLIENT",
+			"login": "Kate",
+			"password": "$2a$10$AgOGXhCIM1jkj5H5SxMQCu6mM2Wd0vmRML5QxfoFw9qNkIJBPdc5y"
+		},
+		"rentDate": "2025-04-17 20:08:46",
+		"returnDate": "2025-04-17 20:08:58"
+	}
 ]
